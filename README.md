@@ -1,4 +1,3 @@
-
 # Jules - High-performance WhatsApp Number Checker
 
 Jules is a high-performance WhatsApp number checker that provides two interfaces for interacting with the application: a Terminal User Interface (TUI) and an interactive Command Line Interface (CLI).

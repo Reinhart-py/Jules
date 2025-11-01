@@ -18,17 +18,11 @@ Jules/
 │   ├───cli.js
 │   ├───tui/
 │   │   ├───add-session.js
-│   │   ├───bulk-message.js
-│   │   ├───export-results.js
 │   │   ├───header.js
-│   │   ├───import-numbers.js
 │   │   ├───index.js
 │   │   ├───logger.js
 │   │   ├───main.js
-│   │   ├───menu.js
-│   │   ├───results.js
-│   │   ├───settings.js
-│   │   └───start-checker.js
+│   │   └───menu.js
 │   └───whatsapp.js
 ├───.gitignore
 ├───config.json

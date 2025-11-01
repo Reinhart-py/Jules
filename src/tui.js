@@ -15,8 +15,7 @@ const screen = blessed.screen({
 
 const grid = new contrib.grid({ rows: 12, cols: 12, screen: screen });
 
-// Header
-grid.set(0, 0, 1, 12, blessed.box, {
+const headerBox = grid.set(0, 0, 1, 12, blessed.box, {
   content: '\n\nJules Checker\n<Made by Reinhart>\n',
   align: 'center',
   valign: 'middle',
@@ -26,7 +25,40 @@ grid.set(0, 0, 1, 12, blessed.box, {
   }
 });
 
-// Menu
+const animationFrames = [
+  `
+  ██╗██╗   ██╗██╗     ███████╗███████╗
+  ██║██║   ██║██║     ██╔════╝██╔════╝
+  ██║██║   ██║██║     █████╗  ███████╗
+  ██║██║   ██║██║     ██╔══╝  ╚════██║
+  ██║╚██████╔╝███████╗███████╗███████║
+  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚══════╝
+         C H E C K E R
+  < by Reinhart - https://reinhart.pages.dev/ >
+  `,
+  `
+  ██╗██╗   ██╗██╗     ███████╗███████╗
+  ██║██║   ██║██║     ██╔════╝██╔════╝
+  ██║██║   ██║██║     █████╗  ███████╗
+  ██║██║   ██║██║     ██╔══╝  ╚════██║
+  ██║╚██████╔╝███████╗███████╗███████║
+  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚══════╝
+         C H E C K E R
+  < by Reinhart - https://reinhart.pages.dev/ >
+  `,
+  `
+  ██╗██╗   ██╗██╗     ███████╗███████╗
+  ██║██║   ██║██║     ██╔════╝██╔════╝
+  ██║██║   ██║██║     █████╗  ███████╗
+  ██║██║   ██║██║     ██╔══╝  ╚════██║
+  ██║╚██████╔╝███████╗███████╗███████║
+  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚══════╝
+         C H E C K E R
+  < by Reinhart - https://reinhart.pages.dev/ >
+  `,
+];
+
+let frameIndex = 0;
 const menu = grid.set(1, 0, 11, 3, blessed.list, {
   label: 'Menu',
   keys: true,
@@ -39,29 +71,15 @@ const menu = grid.set(1, 0, 11, 3, blessed.list, {
   }
 });
 
-// Main Content
 const mainContainer = grid.set(1, 3, 11, 9, blessed.box, {
   label: 'Content'
 });
 
-// Log Viewer
 const logViewer = grid.set(9, 3, 3, 9, contrib.log, {
   label: 'Logs',
   fg: "green",
 });
 
-// Results Table
-const resultsTable = grid.set(1, 3, 8, 9, contrib.table, {
-  keys: true,
-  vi: true,
-  label: 'Results',
-  columnSpacing: 2,
-  columnWidth: [20, 20, 10]
-});
-
-// --- FORMS ---
-
-// Add Session Form
 const addSessionForm = blessed.form({
     parent: screen,
     label: 'Add Session',
@@ -91,30 +109,7 @@ const addSessionForm = blessed.form({
   });
 
   const saveButton = blessed.button({ parent: addSessionForm, name: 'save', content: 'Save', top: 5, left: 2, width: 10, height: 1, style: { bg: 'blue', focus: { bg: 'red' } } });
-  const backButton = blessed.button({ parent: addSessionForm, name: 'back', content: 'Back', top: 5, left: 15, width: 10, height: 1, style: { bg: 'blue', focus: { bg: 'red' } } });
-
-  saveButton.on('press', async () => {
-    const sessionName = sessionNameInput.getValue();
-    if (sessionName) {
-      logViewer.log(`Starting session: ${sessionName}`);
-      addSessionForm.hide();
-      screen.render();
-      try {
-        const sock = await connectToWhatsApp(sessionName);
-        sessions[sessionName] = sock;
-        logViewer.log(`Session '${sessionName}' added.`);
-      } catch (err) {
-        logViewer.log(`Error: ${err.message}`);
-      }
-    }
-  });
-
-  backButton.on('press', () => {
-    addSessionForm.hide();
-    screen.render();
-  });
-
-const checkerOptionsForm = blessed.form({
+  const checkerOptionsForm = blessed.form({
     parent: screen,
     label: 'Checker Options',
     hidden: true,
@@ -194,12 +189,7 @@ const checkerOptionsForm = blessed.form({
     screen.render();
   });
 
-  backButton_checker.on('press', () => {
-    checkerOptionsForm.hide();
-    screen.render();
-  });
-
-const bulkMessageForm = blessed.form({
+  const bulkMessageForm = blessed.form({
     parent: screen,
     label: 'Bulk Message',
     hidden: true,
@@ -267,12 +257,7 @@ const bulkMessageForm = blessed.form({
     screen.render();
   });
 
-  backButton_bulk.on('press', () => {
-    bulkMessageForm.hide();
-    screen.render();
-  });
-
-const importForm = blessed.form({
+  const importForm = blessed.form({
     parent: screen,
     label: 'Import Numbers',
     hidden: true,
@@ -317,12 +302,7 @@ const importForm = blessed.form({
     }
   });
 
-  backButton_import.on('press', () => {
-    importForm.hide();
-    screen.render();
-  });
-
-const exportForm = blessed.form({
+  const exportForm = blessed.form({
     parent: screen,
     label: 'Export Results',
     hidden: true,
@@ -398,12 +378,7 @@ const exportForm = blessed.form({
     }
   });
 
-  backButton_export.on('press', () => {
-    exportForm.hide();
-    screen.render();
-  });
-
-const settingsForm = blessed.form({
+  const settingsForm = blessed.form({
     parent: screen,
     label: 'Settings',
     hidden: true,
@@ -459,12 +434,7 @@ const settingsForm = blessed.form({
     screen.render();
   });
 
-  backButton_settings.on('press', () => {
-    settingsForm.hide();
-    screen.render();
-  });
-
-menu.on('select', (item) => {
+  menu.on('select', (item) => {
   const selected = item.getText();
   logViewer.log(`Selected: ${selected}`);
 
@@ -512,5 +482,27 @@ menu.on('select', (item) => {
   }
 });
 
+  saveButton.on('press', async () => {
+    const sessionName = sessionNameInput.getValue();
+    if (sessionName) {
+      logViewer.log(`Starting session: ${sessionName}`);
+      addSessionForm.hide();
+      screen.render();
+      try {
+        const sock = await connectToWhatsApp(sessionName);
+        sessions[sessionName] = sock;
+        logViewer.log(`Session '${sessionName}' added.`);
+      } catch (err) {
+        logViewer.log(`Error: ${err.message}`);
+      }
+    }
+  });
+
+  backButton.on('press', () => {
+    addSessionForm.hide();
+    screen.render();
+  });
+
 menu.focus();
+
 screen.render();
