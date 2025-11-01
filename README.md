@@ -12,6 +12,11 @@ Jules is a high-performance WhatsApp number checker that provides two interfaces
 *   **Anti-Ban Features:** Set a delay and limit for number checking to reduce the risk of being banned.
 *   **Preset Country Code:** Set a default country code and total number of digits for automatic number formatting.
 
+## Fixes
+
+*   **Fixed `cli.js`:** Resolved issues with missing imports, variable scope, and error handling.
+*   **Added `file-handler.js`:** Created a new file to handle file import and export operations.
+
 ## Installation
 
 1.  Clone the repository:
@@ -32,11 +37,32 @@ To start the application, run the following command:
 npm start
 ```
 
-This will present you with a choice of which interface to use.
+This will prompt you to choose between the TUI Dashboard and the Interactive CLI.
+
+### Interactive CLI
+
+The interactive CLI provides a set of commands to manage sessions, check numbers, and send messages.
+
+*   **Start Checker:** Starts the number checking process.
+*   **Sessions:** Manage your WhatsApp sessions (add, list, remove).
+*   **Import Numbers:** Import numbers from a text file.
+*   **Export Results:** Export the results of the number check to a file (TXT, CSV, or XLSX).
+*   **Bulk Message:** Send a message to all valid numbers.
+*   **Settings:** Configure the country code and total digits for number formatting.
+*   **Logs:** View logs (not yet implemented).
+*   **Exit:** Exit the application.
+
+### TUI Dashboard
+
+The TUI dashboard provides a more visual way to interact with the application.
 
 ## Development
 
 For development instructions, please see the [Developer Guide](DEV.md).
+
+## Contributing
+
+Contributions are welcome! Please feel free to open an issue or submit a pull request.
 
 ## GitHub Repository
 

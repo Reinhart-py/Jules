@@ -1,8 +1,8 @@
 const term = require( 'terminal-kit' ).terminal ;
-const { connectToWhatsApp, checkNumbers } = require('./whatsapp');
-const fs = require('fs');
-const { getConfig, saveConfig } = require('../lib/config-manager');
-const { importNumbers, exportResults } = require('../lib/file-handler');
+const path = require('path');
+const { connectToWhatsApp, checkNumbers } = require(path.join(__dirname, 'whatsapp.js'));
+const { getConfig, saveConfig } = require(path.join(__dirname, '../lib/config-manager.js'));
+const { importNumbers, exportResults } = require(path.join(__dirname, '../lib/file-handler.js'));
 
 const sessions = {};
 let results = [];
