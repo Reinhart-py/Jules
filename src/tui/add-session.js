@@ -57,8 +57,14 @@ module.exports = (screen, menu, logViewer, sessions) => {
     }
   });
 
-  backButton.on('press', () => {
-    addSessionForm.hide();
-    screen.render();
-  });
+  module.exports.test = async (sessionName) => {
+    logViewer.log(`Starting session: ${sessionName}`);
+    try {
+      const sock = await connectToWhatsApp(sessionName);
+      sessions[sessionName] = sock;
+      logViewer.log(`Session '${sessionName}' added.`);
+    } catch (err) {
+      logViewer.log(`Error: ${err.message}`);
+    }
+  };
 };

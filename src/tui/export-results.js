@@ -91,8 +91,12 @@ module.exports = (screen, menu, logViewer, results) => {
     }
   });
 
-  backButton.on('press', () => {
-    exportForm.hide();
-    screen.render();
-  });
+  module.exports.test = (filePath, format, filter) => {
+    try {
+      exportResults(results, filePath, format, filter);
+      logViewer.log(`Results exported to ${filePath}`);
+    } catch (error) {
+      logViewer.log(`Error exporting results: ${error.message}`);
+    }
+  };
 };

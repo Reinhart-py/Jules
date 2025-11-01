@@ -70,8 +70,12 @@ module.exports = (screen, menu, logViewer) => {
     screen.render();
   });
 
-  backButton.on('press', () => {
-    settingsForm.hide();
-    screen.render();
-  });
+  module.exports.test = (countryCode, totalDigits) => {
+    const config = {
+      countryCode,
+      totalDigits: parseInt(totalDigits, 10)
+    };
+    saveConfig(config);
+    logViewer.log('Settings saved.');
+  };
 };

@@ -56,8 +56,12 @@ module.exports = (screen, menu, logViewer) => {
     }
   });
 
-  backButton.on('press', () => {
-    importForm.hide();
-    screen.render();
-  });
+  module.exports.test = (filePath) => {
+    try {
+      importNumbers(filePath);
+      logViewer.log(`Numbers imported from ${filePath}`);
+    } catch (error) {
+      logViewer.log(`Error importing numbers: ${error.message}`);
+    }
+  };
 };

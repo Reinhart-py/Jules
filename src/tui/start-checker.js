@@ -91,10 +91,14 @@ module.exports = (screen, menu, logViewer, resultsTable, sessions, results) => {
           screen.render();
         });
 
-        backButton.on('press', () => {
-          checkerOptionsForm.hide();
-          screen.render();
-        });
+        module.exports.test = async (sessionName, delay, limit) => {
+    const numbers = fs.readFileSync('numbers.txt', 'utf-8').split('\n').filter(Boolean);
+    logViewer.log(`Checking ${numbers.length} numbers with session ${sessionName}...`);
+    results = await checkNumbers(sessions[sessionName], numbers, { delay, limit });
+    const data = results.map(r => [r.number, r.status]);
+    resultsTable.setData({ headers: ['Number', 'Status'], data });
+    screen.render();
+  };
       });
       sessionPrompt.focus();
       screen.render();

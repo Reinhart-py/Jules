@@ -87,10 +87,19 @@ module.exports = (screen, menu, logViewer, sessions, results) => {
         screen.render();
       });
 
-      backButton.on('press', () => {
-        bulkMessageForm.hide();
-        screen.render();
-      });
+      module.exports.test = async (sessionName, message) => {
+    const validNumbers = results.filter(r => r.status === 'valid').map(r => r.number);
+    logViewer.log(`Sending message to ${validNumbers.length} numbers...`);
+    for (const number of validNumbers) {
+      try {
+        await sessions[sessionName].sendMessage(number, { text: message });
+        logViewer.log(`Message sent to ${number}`);
+      } catch (error) {
+        logViewer.log(`Failed to send message to ${number}: ${error.message}`);
+      }
+    }
+    logViewer.log('Bulk message process completed.');
+  };
     }
   });
 };

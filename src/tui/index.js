@@ -1,3 +1,4 @@
+
 const blessed = require('blessed');
 const contrib = require('blessed-contrib');
 
@@ -17,12 +18,16 @@ require('./main')(grid);
 const logViewer = require('./logger')(grid);
 const resultsTable = require('./results')(grid);
 
-require('./add-session')(screen, menu, logViewer, sessions);
-require('./start-checker')(screen, menu, logViewer, resultsTable, sessions, results);
-require('./bulk-message')(screen, menu, logViewer, sessions, results);
-require('./import-numbers')(screen, menu, logViewer);
-require('./export-results')(screen, menu, logViewer, results);
-require('./settings')(screen, menu, logViewer);
+const addSession = require('./add-session')(screen, menu, logViewer, sessions);
+const startChecker = require('./start-checker')(screen, menu, logViewer, resultsTable, sessions, results);
+const bulkMessage = require('./bulk-message')(screen, menu, logViewer, sessions, results);
+const importNumbers = require('./import-numbers')(screen, menu, logViewer);
+const exportResults = require('./export-results')(screen, menu, logViewer, results);
+const settings = require('./settings')(screen, menu, logViewer);
+
+if (process.argv.includes('--test')) {
+  require('./test')(addSession, startChecker, bulkMessage, importNumbers, exportResults, settings);
+}
 
 screen.key(['q', 'C-c'], (ch, key) => {
   return process.exit(0);
